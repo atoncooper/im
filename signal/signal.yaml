@@ -1,0 +1,22 @@
+application :
+  server : 
+    host : 127.0.0.1
+    port : 50012
+    timeout : 30
+    cors :
+      contextPath : /signal
+      allowedOrigins : "*"
+      allowedMethods : "*"
+    
+    logger :
+      level : info
+      format : json
+      path : logs/signal
+      maxSize : 100
+      maxBackups : 10
+      maxAge : 7
+
+  component : 
+    redis : 
+      nodes : 192.168.138.128:7001,192.168.138.128:7002,192.168.138.128:7003
+    

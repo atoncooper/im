@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package message.v1;
+
+option go_package = "./message";
+
+enum MessageType {
+    MSG_TYPE_UNSPECIFIED = 0;
+    TEXT  = 1;
+    IMAGE = 2;
+    AUDIO = 3;
+    VIDEO = 4;
+    FILE  = 5;
+    CUSTOM = 7;
+}
+
+enum SesstionType {
+    SESSION_TYPE_UNSPECIFIED = 0;
+    SINGLE = 1;
+    GROUP  = 2;
+    SYSTEM = 3;
+}
+
+message MessageData {
+    string id = 1;
+    string machine_id = 2;
+    string sender_id = 3;
+    string receiver_id = 4;
+    MessageType messageType = 5;
+    SesstionType sesstionType = 6;
+    bytes payload = 7;
+    int64 seq = 8;
+    int64 send_time = 9;
+    int32 status = 10;
+    map<string, string> ext = 11;
+}
+
+service MessageService {
+    rpc SendMessage (SendMessageRequest) returns (SendMessageResponse){}
+}
+
+message SendMessageRequest {
+    MessageData message = 1;
+}
+message SendMessageResponse {
+    string id = 1;
+    int64  seq = 2;
+}

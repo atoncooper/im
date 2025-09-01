@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package seq.v1;
+
+option go_package = "./seq";
+
+
+service SequenceService {
+    rpc GenerateMessageId (Empty) returns (MessageIdResponse);
+    rpc GenerateMessageSeq (MessageSeqRequest) returns (MessageResponse);
+}
+
+message Empty {
+}
+
+message MessageIdResponse {
+    string id = 1;
+}
+
+
+message MessageSeqRequest {
+    string sender_id = 1;
+    string receiver_id = 2;
+    string machine_id = 3;
+}
+
+message MessageResponse {
+    int64 seq = 1;
+}

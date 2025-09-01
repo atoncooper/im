@@ -1,0 +1,12 @@
+go 1.24.3
+
+use (
+	./center
+	./delivery
+	./gateway
+	./obs
+	./proto
+	./signal
+	./storage
+	./utils
+)

@@ -1,0 +1,41 @@
+application : 
+  name : center
+  port : 8080
+  host : 127.0.0.1
+  timeout : 30
+
+  cors : 
+    contextPath: /gateway
+    allowedOrigins: "*"
+    allowedMethods: "*"
+    allowedHeaders: "*"
+    maxAge: 3600
+  
+  logger : 
+    level : info
+    format : json
+    file : 
+      path : logs/center
+      maxSize : 100
+      maxBackups : 10
+      maxAge : 7
+    
+  component : 
+    consul : 
+      endpoint : 127.0.0.1
+      port : 8500
+      scheme : http
+      timeout : 5s
+      service : 
+        register : true
+        tags : ["center", "v1.1"]
+        healthCheck : 
+          enable : true
+          interval : 10
+          timeout : 5
+          httpPath : /center/health
+    
+    kafka : 
+      brokers : 192.168.138.128:9092,192.168.138.128:9093,192.168.138.128:9094
+      topic : "call_experts"
+      

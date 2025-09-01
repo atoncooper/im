@@ -1,0 +1,94 @@
+application:
+  name: gateway
+  port: 8080
+  host: 127.0.0.1
+  timeout : 30s
+  nodeId : gatewat-node-1
+  tag : gateway
+
+  cors:  
+    contextPath: /gateway
+    allowedOrigins: "*"
+    allowedMethods: "*"
+    allowedHeaders: "*"
+    maxAge: 3600
+
+  logger : 
+    level : info
+    format : json
+    file : 
+      path : logs/gateway
+      maxSize : 100
+      maxBackups : 10
+      maxAge : 7
+
+  websocket :
+    readerBufferSize : 1024
+    writeBufferSize: 4096
+    maxConn: 10000
+    handshakeTimeout: 5s
+    pongWait: 60s
+    pingPeriod: 54s
+    writeWait: 10s
+
+
+  # Component configurations
+  component :
+    consul : 
+      endpoint : 127.0.0.1
+      port : 8500
+      scheme : http
+      timeout : 5s
+      service : 
+        register : true
+        tags : ["gateway", "v1.1"]
+        healthCheck : 
+          enable : true
+          interval : 10
+          timeout : 5
+          httpPath : /gateway/health
+    
+    redis : 
+      nodes : 192.168.138.128:7001,192.168.138.128:7002,192.168.138.128:7003
+      password : ''
+      poolSize : 100
+      minIdle : 10
+      maxIdle : 100
+      maxActive : 1000
+      db : 0
+      timeout : 5
+      readeTimeout : 3
+      writeTimeout : 3
+    
+    kafka : 
+      brokers : 192.168.138.128:9092
+
+      topic : im
+      
+      topicConfig :
+        partitions : 6
+        replicationFactor: 3
+        retentionMs : 604800000 # 7 days
+        compressionType : snappy
+        segmentMs : 3600000
+        
+      # producer
+      requiredAcks : 1
+      maxRetries : 3
+
+      # consumer
+      groupId : gateway-group
+
+
+      # DLQ
+      dlq:
+        enabled: true
+        topicSuffix : "-dlq"
+
+      # 安全相关配置
+      security : 
+        enableTLS : false
+
+    
+    
+
